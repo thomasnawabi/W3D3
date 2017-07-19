@@ -9,7 +9,19 @@ class ShortenedURL < ActiveRecord::Base
   primary_key: :id,
   foreign_key: :user_id
 
+  has_many :visits,
+  class_name: :Visit,
+  primary_key: :id,
+  foreign_key: :url_id
 
+  has_many :visitors,
+  through: :visits,
+  source: :visit_user
+
+
+  def num_clicks
+    visits.count
+  end
 
 
   def self.construct(user, long_url)
